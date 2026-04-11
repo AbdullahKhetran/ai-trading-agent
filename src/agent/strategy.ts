@@ -141,7 +141,6 @@ export class HybridStrategy implements TradingStrategy {
    * - Uses spread to filter out illiquid market conditions
    *
    * Entry (BUY):
-   * - Positive momentum
    * - Price above moving average (uptrend)
    * - RSI below 70 (not overbought)
    * - Tight spread
@@ -241,12 +240,12 @@ export class HybridStrategy implements TradingStrategy {
 
     // BUY CONDITIONS
     if (
-      changePct > 0.5 &&         // momentum up
       isUptrend &&               // above MA
       rsi < 70 &&                // not overbought
       spread < 0.1 &&            // tight spread
       this.lastBuyPrice === null // no open position
-    ) {
+    )
+     {
       action = "BUY";
       confidence = 0.7 + Math.min(0.2, changePct / 10);
       reasoning = `BUY: Momentum ${changePct.toFixed(
@@ -258,8 +257,9 @@ export class HybridStrategy implements TradingStrategy {
 
     // SELL CONDITIONS
     else if (
-      changePct < -0.5 ||        // momentum down
-      (rsi > 70 && isDowntrend)  // overbought reversal
+      isDowntrend && // prive below MA
+      rsi > 30 &&  // not oversold
+      spread < 0.1 // tight spread
     ) {
       action = "SELL";
       confidence = 0.7;
@@ -338,6 +338,41 @@ export class HybridStrategy implements TradingStrategy {
       amount: this.tradeAmountUsd,
       confidence,
       reasoning: reason,
+    };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Toggle Strategy — alternates between BUY and SELL every tick
+// ─────────────────────────────────────────────────────────────────────────────
+
+export class ToggleStrategy implements TradingStrategy {
+  private tradeAmountUsd: number;
+  private lastAction: "BUY" | "SELL" = "SELL"; // start so first action becomes BUY
+
+  constructor(tradeAmountUsd = 100) {
+    this.tradeAmountUsd = tradeAmountUsd;
+  }
+
+  async analyze(data: MarketData): Promise<TradeDecision> {
+    // Flip action every tick
+    const action: "BUY" | "SELL" =
+      this.lastAction === "BUY" ? "SELL" : "BUY";
+
+    this.lastAction = action;
+
+    const reasoning =
+      action === "BUY"
+        ? "Alternating strategy: BUY (toggle rule)"
+        : "Alternating strategy: SELL (toggle rule)";
+
+    return {
+      action,
+      asset: data.pair.replace("USD", ""),
+      pair: data.pair,
+      amount: this.tradeAmountUsd,
+      confidence: 0.75,
+      reasoning,
     };
   }
 }

@@ -25,8 +25,7 @@ import * as path from "path";
 
 import { TradingStrategy } from "../types/index";
 import { getAgentId, getAgentRegistration } from "./identity";
-// import { MomentumStrategy } from "./strategy";
-import { HybridStrategy } from "./strategy";
+import { MomentumStrategy, LLMStrategy, HybridStrategy, ToggleStrategy } from "./strategy";
 import { KrakenClient } from "../exchange/kraken";
 import { VaultClient } from "../onchain/vault";
 import { RiskRouterClient } from "../onchain/riskRouter";
@@ -207,11 +206,10 @@ export async function runAgent(strategy: TradingStrategy) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── SWAP YOUR STRATEGY HERE ─────────────────────────────────────────────────
-// import { LLMStrategy } from "./strategy.js";
 // const strategy = new LLMStrategy();
 // const strategy = new MomentumStrategy(5, 100);
-
-const strategy = new HybridStrategy(14, 100);
+// const strategy = new HybridStrategy(14, 100);
+const strategy = new ToggleStrategy(50);
 // ────────────────────────────────────────────────────────────────────────────
 
 runAgent(strategy).catch((err) => {
