@@ -24,3 +24,9 @@ coverage.json
 .specstory/
 checkpoints.jsonl
 src/typechain/
+
+# Later
+scripts/admin-vault.ts
+scripts/auto-reputation.ts
+scripts/seed-test-agents.ts
+test/
