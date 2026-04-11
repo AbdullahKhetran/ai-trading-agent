@@ -35,6 +35,7 @@ Your Strategy (TradingStrategy interface)
 - Node.js 20+
 - Sepolia ETH ([sepoliafaucet.com](https://sepoliafaucet.com))
 - Infura or Alchemy Sepolia RPC URL
+- Kraken CLI
 - Kraken Pro account with API keys (see below)
 
 ---
@@ -42,11 +43,11 @@ Your Strategy (TradingStrategy interface)
 ## Setup
 
 ```bash
-git clone <this-repo>
-cd ai-trading-agent-tutorial
+git clone https://github.com/AbdullahKhetran/ai-trading-agent/
+cd ai-trading-agent
 npm install
 cp .env.example .env
-# Fill in SEPOLIA_RPC_URL, PRIVATE_KEY, KRAKEN_API_KEY, KRAKEN_API_SECRET
+# Fill in SEPOLIA_RPC_URL, PRIVATE_KEY, AGENT_WALLET_PRIVATE_KEY KRAKEN_API_KEY, KRAKEN_API_SECRET
 ```
 
 ### Kraken API key
@@ -60,7 +61,21 @@ Use **Kraken Pro** (kraken.com → Go to Kraken Pro). Go to **Settings → API**
 
 ## Quickstart
 
-### 1. Deploy contracts
+### 1. Contracts
+
+#### Use hackathon provided contracts
+
+Copy hackathon provided addresses to `.env`:
+
+```env
+AGENT_REGISTRY_ADDRESS=0x97b07dDc405B0c28B17559aFFE63BdB3632d0ca3
+HACKATHON_VAULT_ADDRESS=0x0E7CD8ef9743FEcf94f9103033a044caBD45fC90
+RISK_ROUTER_ADDRESS=0xd6A6952545FF6E6E6681c2d15C59f9EB8F40FdBC
+REPUTATION_REGISTRY_ADDRESS=0x423a9904e39537a9997fbaF0f220d79D7d545763
+VALIDATION_REGISTRY_ADDRESS=0x92bF63E5C7Ac6980f237a7164Ab413BE226187F1
+```
+
+#### OR deploy your own contracts
 
 ```bash
 npx hardhat run scripts/deploy.ts --network sepolia
@@ -76,6 +91,7 @@ REPUTATION_REGISTRY_ADDRESS=...
 VALIDATION_REGISTRY_ADDRESS=...
 ```
 
+
 ### 2. Register your agent
 
 ```bash
@@ -85,7 +101,7 @@ npm run register
 Copy the printed `AGENT_ID` to your `.env`:
 
 ```env
-AGENT_ID=0
+AGENT_ID=<your-agent-id>
 ```
 
 ### 3. Run the agent + dashboard
@@ -140,11 +156,11 @@ Edit `src/agent/index.ts`:
 
 ```typescript
 // Replace this:
-import { MomentumStrategy } from "./strategy.js";
+import { MomentumStrategy } from "./strategy";
 const strategy = new MomentumStrategy(5, 100);
 
 // With your own:
-import { MyStrategy } from "./my-strategy.js";
+import { MyStrategy } from "./my-strategy";
 const strategy = new MyStrategy();
 ```
 
@@ -180,7 +196,9 @@ Step-by-step walkthrough in the `tutorial/` folder:
 contracts/
   AgentRegistry.sol      # ERC-8004 agent identity registry
   HackathonVault.sol     # Capital vault with per-agent allocation
+  RepuataionRegistry
   RiskRouter.sol         # On-chain risk validation
+  ValidationRegistry
 
 src/
   types/index.ts         # Shared TypeScript interfaces
@@ -191,33 +209,20 @@ src/
   exchange/
     kraken.ts            # Kraken CLI client (paper + live)
   onchain/
-    vault.ts             # Vault contract interactions
+    reputationRegistry.ts
     riskRouter.ts        # RiskRouter contract interactions
+    validationRegistry.ts
+    vault.ts             # Vault contract interactions
+    
   explainability/
-    reasoner.ts          # Human-readable explanation formatter
     checkpoint.ts        # EIP-712 checkpoint generation + verification
-
+    reasoner.ts          # Human-readable explanation formatter
+    
 scripts/
   deploy.ts              # Deploy all contracts to Sepolia
   register-agent.ts      # Register agent on-chain
   run-agent.ts           # Run the agent
   dashboard.ts           # Live web dashboard (http://localhost:3000)
-```
-
----
-
-## Verify a checkpoint
-
-```typescript
-import { verifyCheckpoint } from "./src/explainability/checkpoint.js";
-
-const valid = verifyCheckpoint(
-  checkpoint,
-  process.env.AGENT_REGISTRY_ADDRESS!,
-  11155111,
-  process.env.EXPECTED_SIGNER_ADDRESS!
-);
-console.log(valid); // true
 ```
 
 ---
