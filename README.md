@@ -196,33 +196,34 @@ Step-by-step walkthrough in the `tutorial/` folder:
 contracts/
   AgentRegistry.sol      # ERC-8004 agent identity registry
   HackathonVault.sol     # Capital vault with per-agent allocation
-  RepuataionRegistry
+  RepuataionRegistry.sol # Feedback + repuation
   RiskRouter.sol         # On-chain risk validation
-  ValidationRegistry
+  ValidationRegistry.sol # Attestations
 
 src/
-  types/index.ts         # Shared TypeScript interfaces
+  types/index.ts            # Shared TypeScript interfaces
   agent/
-    index.ts             # Main agent loop
-    identity.ts          # ERC-8004 registration
-    strategy.ts          # TradingStrategy interface + example strategies
+    index.ts                # Main agent loop
+    identity.ts             # ERC-8004 registration
+    strategy.ts             # TradingStrategy interface + example strategies
   exchange/
-    kraken.ts            # Kraken CLI client (paper + live)
+    kraken.ts               # Kraken CLI client (paper + live)
   onchain/
     reputationRegistry.ts
-    riskRouter.ts        # RiskRouter contract interactions
+    riskRouter.ts           # RiskRouter contract interactions
     validationRegistry.ts
-    vault.ts             # Vault contract interactions
+    vault.ts                # Vault contract interactions
     
   explainability/
-    checkpoint.ts        # EIP-712 checkpoint generation + verification
-    reasoner.ts          # Human-readable explanation formatter
+    checkpoint.ts           # EIP-712 checkpoint generation + verification
+    reasoner.ts             # Human-readable explanation formatter
     
 scripts/
-  deploy.ts              # Deploy all contracts to Sepolia
-  register-agent.ts      # Register agent on-chain
-  run-agent.ts           # Run the agent
-  dashboard.ts           # Live web dashboard (http://localhost:3000)
+  deploy.ts                 # Deploy all contracts to Sepolia
+  register-agent.ts         # Register agent on-chain
+  run-agent.ts              # Run the agent
+  dashboard.ts              # Live web dashboard (http://localhost:3000)
+  claim-vaults.ts           # Calim sandbox capital
 ```
 
 ---
