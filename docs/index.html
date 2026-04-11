@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nova Agent</title>    
+  </head>
+
+  <body>
+
+    <header>
+      <h1>Nova Agent</h1>
+      <p>An Autonomous AI Trading Agent</p>
+    </header>
+
+    <section>
+      <h2>Overview</h2>
+      <p>
+        This project is an AI-driven trading agent designed for cryptocurrency markets. It uses strategy to generate buy/sell/hold signals in real-time.
+      </p>
+
+      <h2>How It Works</h2>
+        <ol>
+          <li>Fetches live market data using Kaken CLI</li>
+          <li>Analyze the market data</li>
+          <li>Generates trade signal and human readable explaination</li>
+          <li>Build and sign a TradeIntent (EIP-712) </li>
+          <li>Submit trade intent to risk router - on-chain validation</li>
+          <li>Executes the trade using Kraken CLI</li>
+          <li>Generate EIP-712 signed checkpoint</li>
+          <li>Post checkpoint hash to ValidationRegistry</li>
+          <li>Logs checkpoint to local file</li>
+        </ol>
+
+      <h2>Operator and Agent Information</h2>
+        <ul>
+          <li>Operator wallet: <a href="https://sepolia.etherscan.io/address/0x3d21945d06CBA57D057D563e50ED7Ca6beF0ED56">0x3d21945d06CBA57D057D563e50ED7Ca6beF0ED56</a></li>
+          <li>Agent wallet: <a href="https://sepolia.etherscan.io/address/0xC25a260258d785f776D415A79c4b6dF2e3F1d4Ad">0xC25a260258d785f776D415A79c4b6dF2e3F1d4Ad</a></li>
+          <li>AgentRegistry: <a href="https://sepolia.etherscan.io/address/0xE759E9Cb6bFeD5C608b1125126B11a2F25661481">0xE759E9Cb6bFeD5C608b1125126B11a2F25661481</a></li>
+          <li>Agent Registration Transaction Hash: <a href="https://sepolia.etherscan.io/tx/0xf8c89e4d6304ec5932374b291958305dc53e2f92bfe2d4cb5a0c5b0251d4d7de">0xf8c89e4d6304ec5932374b291958305dc53e2f92bfe2d4cb5a0c5b0251d4d7de</a></li>
+          <li>Agent Id: 41</li>
+        </ul>
+    </section>
+
+    <footer>
+      Built for <a href="https://lablab.ai/ai-hackathons/ai-trading-agents">AI Trading Agent Hackathon</a> by Team <a href="https://lablab.ai/ai-hackathons/ai-trading-agents/technova-labs">TechNova Labs</a>
+    </footer>
+
+  </body>
+</html>
